@@ -1,5 +1,7 @@
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using TheChat.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration; // access to configuration
@@ -12,13 +14,16 @@ builder.Services.AddControllers();          // asp .net controllers
 builder.Services.AddEndpointsApiExplorer(); // search for endpoints to show in swagger 
 builder.Services.AddSwaggerGen();           // swagger interface 
 
+builder.Services.AddDbContext<TheChatDbContext>(options =>
+{
+    options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+});
+
 // cross domen requests
 // TODO: change accessibility onlu for frontend pages
 builder.Services.AddCors();                 
 
 var app = builder.Build();
-
-
 
 
 // -------------------------------------------------------------------------------------------
