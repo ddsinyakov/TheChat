@@ -1,7 +1,8 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using TheChat.Models;
+using TheChat.Services.DataBase;
+using TheChat.Services.DataBase.UserDAO;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration; // access to configuration
@@ -13,6 +14,8 @@ ConfigurationManager config = builder.Configuration; // access to configuration
 builder.Services.AddControllers();          // asp .net controllers
 builder.Services.AddEndpointsApiExplorer(); // search for endpoints to show in swagger 
 builder.Services.AddSwaggerGen();           // swagger interface 
+
+builder.Services.AddScoped<IUserDao, UserDao>();
 
 builder.Services.AddDbContext<TheChatDbContext>(options =>
 {
@@ -28,7 +31,7 @@ var app = builder.Build();
 
 // -------------------------------------------------------------------------------------------
 // Configure the HTTP request pipeline.
-//-------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -37,6 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(builder => builder.AllowAnyOrigin());
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseRouting();
 

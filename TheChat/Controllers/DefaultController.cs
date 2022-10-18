@@ -6,11 +6,14 @@ namespace TheChat.Controllers
     [Route("[controller]")]
     public class DefaultController : Controller
     {
+
         [HttpGet]
-        public String Index()
+        public ActionResult<String> Index()
         {
-            return "Hello world";
+            return Ok("Hello world");
         }
+
+
     }
 
 }
