@@ -1,8 +1,8 @@
 
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using TheChat.Services.DataBase;
 using TheChat.Services.DataBase.UserDAO;
+using TheChat.Services.Hash;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager config = builder.Configuration; // access to configuration
@@ -16,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer(); // search for endpoints to show in s
 builder.Services.AddSwaggerGen();           // swagger interface 
 
 builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<IHashService, Sha256HashService>();
 
 builder.Services.AddDbContext<TheChatDbContext>(options =>
 {
