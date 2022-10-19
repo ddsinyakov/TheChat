@@ -40,10 +40,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(builder => builder.AllowAnyOrigin());
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
+
 app.UseRouting();
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
