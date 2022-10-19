@@ -18,6 +18,7 @@ namespace TheChat.Models.Entities
         public String SecondName { get; set; } = null!;
 
         [Required]
+        [MaxLength(30)]
         public String Login { get; set; } = null!;
 
         [Required]
