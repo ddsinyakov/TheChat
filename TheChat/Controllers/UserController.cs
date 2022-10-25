@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TheChat.Features;
 using TheChat.Models.Entities;
 using TheChat.Services.DataBase.UserDAO;
 
@@ -37,7 +38,8 @@ namespace TheChat.Controllers
                 Password = "1234",
                 Salt = "1234",
                 CreatedDate = DateTime.Now,
-                LastLoginDate = DateTime.Now
+                LastLoginDate = DateTime.Now,
+                Role = Roles.CommonUser.ToString()
             });
 
             return Ok();

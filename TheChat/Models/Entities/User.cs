@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TheChat.Features;
 
 namespace TheChat.Models.Entities
 {
@@ -24,9 +26,11 @@ namespace TheChat.Models.Entities
         [Required]
         public String Email { get; set; } = null!;
 
+        [Required]
         [Column(TypeName = "char(64)")]
         public String Password { get; set; } = null!;
 
+        [Required]
         [Column(TypeName = "char(64)")]
         public String Salt { get; set; } = String.Empty;
 
@@ -35,5 +39,11 @@ namespace TheChat.Models.Entities
 
         [Required]
         public DateTime LastLoginDate { get; set; }
+
+        [Required]
+        public String Role { get; set; } = null!;
+       
+
+        
     }
 }

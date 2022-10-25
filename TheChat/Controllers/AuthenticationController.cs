@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
+using TheChat.Features;
 using TheChat.Models.DTO;
 using TheChat.Models.Entities;
 using TheChat.Services.DataBase.UserDAO;
@@ -90,7 +91,8 @@ namespace TheChat.Controllers
                 Password = hashedPassword,
                 Salt = salt,
                 CreatedDate = DateTime.Now,
-                LastLoginDate = DateTime.Now
+                LastLoginDate = DateTime.Now,
+                Role = Roles.CommonUser.ToString()
             };
 
             await _userDao.AddUserAsync(newUser);
