@@ -13,5 +13,10 @@ namespace TheChat.Services.DataBase
         {
             Database.EnsureCreated();
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
     }
 }
