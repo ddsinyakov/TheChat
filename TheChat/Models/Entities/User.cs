@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TheChat.Features;
@@ -24,6 +25,7 @@ namespace TheChat.Models.Entities
         public String Login { get; set; } = null!;
 
         [Required]
+        [MaxLength(360)] // used to create unique index for entity. Unique index can't be created with nvarchar(max)
         public String Email { get; set; } = null!;
 
         [Required]
@@ -40,10 +42,17 @@ namespace TheChat.Models.Entities
         [Required]
         public DateTime LastLoginDate { get; set; }
 
-        [Required]
-        public String Role { get; set; } = null!;
-       
+        // Roles Implementation
+        # region Roles   
 
-        
+        public Guid RoleId { get; set; } 
+
+        [Required]
+        public Role Role { get; set; } = null!;
+
+        #endregion
+
+
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using TheChat.Features;
 using TheChat.Models.DTO;
 using TheChat.Models.Entities;
+using TheChat.Services.Database.RoleDao;
 using TheChat.Services.DataBase.UserDAO;
 using TheChat.Services.Hash;
 
@@ -14,11 +15,16 @@ namespace TheChat.Controllers
     public class AuthenticationController : Controller
     {
         private IUserDao _userDao { get; init; }
+        private IRoleDao _roleDao { get; init; }
         private IHashService _hashService { get; init; }
 
-        public AuthenticationController(IUserDao userDao, IHashService hashService)
+        public AuthenticationController(
+            IUserDao userDao,
+            IRoleDao roleDao,
+            IHashService hashService)
         {
             _userDao = userDao;
+            _roleDao = roleDao;
             _hashService = hashService;
         }
 
@@ -70,10 +76,10 @@ namespace TheChat.Controllers
         {
             User? checkIfExist = await _userDao.GetUserAsync(predicate);
 
-            if (checkIfExist is not null) return true;
+            if (checkIfExist is null) return false;
 
             ModelState.AddModelError(key, errorMessage); // Adds model error to turn back in responce
-            return false;
+            return true;
         }
 
         [NonAction] // Used inside class to create user entity and add it database
@@ -81,6 +87,8 @@ namespace TheChat.Controllers
         {
             String salt = _hashService.Hash(_hashService.GenerateSalt());
             String hashedPassword = _hashService.Hash(toAdd.Password + salt);
+
+            Role role = await _roleDao.GetCommonUserRole();
 
             User newUser = new User()
             {
@@ -92,7 +100,7 @@ namespace TheChat.Controllers
                 Salt = salt,
                 CreatedDate = DateTime.Now,
                 LastLoginDate = DateTime.Now,
-                Role = Roles.CommonUser.ToString()
+                Role = role
             };
 
             await _userDao.AddUserAsync(newUser);
