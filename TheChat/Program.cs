@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer(); // search for endpoints to show in s
 builder.Services.AddSwaggerGen();           // swagger interface 
 
 builder.Services.AddScoped<IUserDao, UserDao>();
-builder.Services.AddScoped<IHashService, Sha256HashService>();
+builder.Services.AddSingleton<IHashService, Sha256HashService>();
 
 builder.Services.AddDbContext<TheChatDbContext>(options =>
 {
