@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using TheChat.Services.Database.RoleDao;
 using TheChat.Services.DataBase;
 using TheChat.Services.DataBase.UserDAO;
 using TheChat.Services.Hash;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer(); // search for endpoints to show in s
 builder.Services.AddSwaggerGen();           // swagger interface 
 
 builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<IRoleDao, RoleDao>();
 builder.Services.AddSingleton<IHashService, Sha256HashService>();
 
 builder.Services.AddDbContext<TheChatDbContext>(options =>
