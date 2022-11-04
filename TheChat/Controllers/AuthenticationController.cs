@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
-using TheChat.Features;
+
 using TheChat.Models.DTO;
 using TheChat.Models.Entities;
 using TheChat.Services.Database.RoleDao;
 using TheChat.Services.DataBase.UserDAO;
+using TheChat.Services.Authentication;
 using TheChat.Services.Hash;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TheChat.Controllers
 {
@@ -17,15 +19,18 @@ namespace TheChat.Controllers
         private IUserDao _userDao { get; init; }
         private IRoleDao _roleDao { get; init; }
         private IHashService _hashService { get; init; }
+        private IAuthenticationService _authenticationService { get; init; }
 
         public AuthenticationController(
             IUserDao userDao,
             IRoleDao roleDao,
-            IHashService hashService)
+            IHashService hashService,
+            IAuthenticationService authenticationService)
         {
             _userDao = userDao;
             _roleDao = roleDao;
             _hashService = hashService;
+            _authenticationService = authenticationService;
         }
 
         #region Registration
@@ -66,6 +71,8 @@ namespace TheChat.Controllers
 
             // Generate new user and add it to database
             User newUser = await AddNewUser(toRegister);
+
+            _authenticationService.Authenticate(newUser);
 
             return Ok();
 
@@ -109,5 +116,15 @@ namespace TheChat.Controllers
         }
 
         #endregion
+
+        [Authorize]
+        [HttpGet("LogOut")]
+        public IActionResult LogOut()
+        {
+            // Logout User
+            _authenticationService.LogOut();
+
+            return Ok();
+        }
     }
 }
