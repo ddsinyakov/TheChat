@@ -9,9 +9,6 @@ namespace TheChat.Services.Database.RoleDao
     {
         private TheChatDbContext _dbContext { get; init; }
 
-        private static Role? commonUser { get; set; } = null;
-        private static Role? admin { get; set; } = null;
-
         public RoleDao(TheChatDbContext dbContext)
         {
             if (dbContext == null)
@@ -22,24 +19,18 @@ namespace TheChat.Services.Database.RoleDao
 
         public async Task<Role> GetAdminRole()
         {
-            if (admin is null)
-            {
-                admin = await _dbContext.Roles
-                    .FirstAsync(role => role.RoleName == RolesDefinitions.Admin);
-            }
+            Role res = await _dbContext.Roles
+                .FirstAsync(role => role.RoleName == RolesDefinitions.Admin);
 
-            return admin;
+            return res;
         }
 
         public async Task<Role> GetCommonUserRole()
         {
-            if (commonUser is null)
-            {
-                commonUser = await _dbContext.Roles
-                    .FirstAsync(role => role.RoleName == RolesDefinitions.CommonUser);
-            }
+            Role res = await _dbContext.Roles
+                .FirstAsync(role => role.RoleName == RolesDefinitions.CommonUser);
 
-            return commonUser;
+            return res;
         }
 
         public async Task<Role?> GetRoleAsync(string roleName)
